@@ -27,7 +27,7 @@ periodo <- c('2020', '2021')
 for (i in periodo) {
   
   #-------------------------------------------------------------------------------
-  #                     Seccion 1. Cargar bases de datos y ajustar
+  #                     Sección 1. Cargar bases de datos y ajustar
   #-------------------------------------------------------------------------------
   
   # Cargar bases de datos ####
@@ -108,7 +108,7 @@ for (i in periodo) {
 
   
   #-------------------------------------------------------------------------------
-  #                     Seccion 2. Cálculos siniestralidad
+  #                     Sección 2. Cálculos siniestralidad
   #-------------------------------------------------------------------------------
     
   # Ingresos ####
@@ -165,7 +165,7 @@ for (i in periodo) {
   costos_rc <- rbind(costos_rc_niif_1_2,costos_rc_rcp_6_7_8)
   rm(costos_rc_niif_1_2,costos_rc_rcp_6_7_8)
   
-  # Analisis individual por cuenta y EPS  
+  # Análisis individual por cuenta y EPS  
   
   costos_rc_ag_eps <- costos_rc %>% group_by(COD, niif, NIT) %>% summarise(COSTOS = sum(cost, na.rm=T),.groups = 'drop')
   costos_rc_ag_eps$Periodo <- i
@@ -176,24 +176,24 @@ for (i in periodo) {
   
   costos_rc_ag_eps <- left_join(costos_rc_ag_eps, Costos_Codigos)
   
-  # Analisis individual por cuenta  
+  # Análisis individual por cuenta  
   
   costos_rc_ag <- costos_rc %>% group_by(COD, niif) %>% summarise(COSTOS = sum(cost, na.rm=T),.groups = 'drop')
   costos_rc_ag$Periodo <- i
   
   costos_rc_ag <- left_join(costos_rc_ag, Costos_Codigos)
   
-  # Analisis individual por EPS
+  # Análisis individual por EPS
   
   costos_rc_eps <- costos_rc %>% group_by(NIT, REGIMEN, niif) %>% summarise(COSTOS = sum(cost, na.rm=T),.groups = 'drop')
   costos_rc_eps$Periodo <- i
   
-  # Analisis agregado
+  # Análisis agregado
   
   costos_rc <- costos_rc %>% group_by(niif) %>% summarise(COSTOS = sum(cost, na.rm=T),.groups = 'drop')
   costos_rc$Periodo <- i
   
-  # Liberacion reservas ####
+  # Liberación reservas ####
   
   liberacion_rc_niif_1_2 <- base %>% dplyr::filter(GRUPO %in% c(1,2))
   liberacion_rc_niif_1_2 <- liberacion_rc_niif_1_2 %>% filter(COD %in% c("410228", "410229"))
@@ -202,7 +202,7 @@ for (i in periodo) {
   liberacion_rc <- liberacion_rc_niif_1_2
   rm(liberacion_rc_niif_1_2)
   
-  # Analisis individual por cuenta y EPS
+  # Análisis individual por cuenta y EPS
   
   liberacion_rc_ag_eps <- liberacion_rc %>% group_by(COD, niif, NIT) %>% summarise(LIBERACION = sum(cost, na.rm=T),.groups = 'drop')
   liberacion_rc_ag_eps$Periodo <- i
@@ -213,19 +213,19 @@ for (i in periodo) {
   
   liberacion_rc_ag_eps <- left_join(liberacion_rc_ag_eps, Liberacion_Codigos)
   
-  # Analisis individual por cuenta  
+  # Análisis individual por cuenta  
   
   liberacion_rc_ag <- liberacion_rc %>% group_by(COD, niif) %>% summarise(LIBERACION = sum(cost, na.rm=T),.groups = 'drop')
   liberacion_rc_ag$Periodo <- i
   
   liberacion_rc_ag <- left_join(liberacion_rc_ag, Liberacion_Codigos)
   
-  # Analisis individual por EPS
+  # Análisis individual por EPS
   
   liberacion_rc_eps <- liberacion_rc %>% group_by(NIT, REGIMEN, niif) %>% summarise(LIBERACION = sum(cost, na.rm=T),.groups = 'drop')
   liberacion_rc_eps$Periodo <- i
   
-  # Analisis agregado
+  # Análisis agregado
   
   liberacion_rc <- liberacion_rc %>% group_by(niif) %>% summarise(LIBERACION = sum(cost, na.rm = T),.groups = 'drop')
   liberacion_rc$Periodo <- i
@@ -288,7 +288,7 @@ rm(base, Costos_Codigos, costos_rc_ag_eps, cuentas_rc_niif, EPS, eps_cuentas_rc,
    liberacion_rc_ag_eps, Liberacion_Codigos, siniestralidad_rc, siniestralidad_rc_eps, siniestralidad_rc_niif)
 
 #-------------------------------------------------------------------------------
-#                     Seccion 3. Exportar resultados
+#                     Sección 3. Exportar resultados
 #-------------------------------------------------------------------------------
 
 consolidado_siniestralidad <- as.data.frame(consolidado_siniestralidad)
