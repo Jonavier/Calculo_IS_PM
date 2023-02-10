@@ -1,5 +1,7 @@
 options(scipen = 999)
 
+# Cargar librerías a usar ####
+
 packages <- c('dplyr', 'readxl', 'reshape2', 'tidyr', 'stringr', 'writexl', 'openxlsx')
 
 new.packages <- packages[!(packages %in% installed.packages()[,"Package"])]
@@ -8,7 +10,7 @@ lapply(packages, library, character.only = T)
 
 rm(list = ls())
 
-periodo <- c('2020', '2021')
+# Crear data.frame a usar posteriormente para guardar resultados ####
 
 consolidado_cuentas_niif <- NULL
 consolidado_siniestralidad <- NULL
@@ -17,6 +19,10 @@ consolidado_eps_cuentas <- NULL
 consolidado_siniestralidad_niif <- NULL
 
 `%notin%` <- Negate(`%in%`)
+
+# Definir periodos de estudio ####
+
+periodo <- c('2020', '2021')
 
 for (i in periodo) {
   
@@ -86,10 +92,6 @@ for (i in periodo) {
   base <- base %>% mutate(GRUPO = ifelse(str_starts(GRUPO,"Res. 414")==TRUE,7,GRUPO))
   base <- base %>% mutate(GRUPO = ifelse(str_starts(GRUPO,"Res. 533")==TRUE,8,GRUPO))
   
-  #-------------------------------------------------------------------------------
-  #                     Seccion 2. Cálculos siniestralidad
-  #-------------------------------------------------------------------------------
-  
   ################################################################################
   #############################  Excluir EPS por inconsistencia   #########################
   ################################################################################
@@ -104,10 +106,11 @@ for (i in periodo) {
     base <- base
   }
 
-  ################################################################################
-  #############################  Regimen NIIF 1 - 2    #########################
-  ################################################################################
   
+  #-------------------------------------------------------------------------------
+  #                     Seccion 2. Cálculos siniestralidad
+  #-------------------------------------------------------------------------------
+    
   # Ingresos ####
   
   ingresos_rc_niif_1_2 <- base %>% dplyr::filter(GRUPO %in% c(1,2))
