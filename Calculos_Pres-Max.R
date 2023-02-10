@@ -39,9 +39,7 @@ for (i in periodo) {
   g8 <- read_excel(paste0("./Datos/Originales/",i,".xlsx"), sheet = "FT001-08", skip = 17)
   EPS <- read_excel(paste0("./Datos/Originales/",i,".xlsx"),  sheet = "Hoja1")
   
-  if(i == "2019"){
-    g7_1 <- read_excel(paste0("./Datos/Originales/",i,".xlsx"), sheet = "FT001-07_1", skip = 17)
-  }else if(i == "2020"){
+  if(i == "2020"){
     g2_1 <- read_excel(paste0("./Datos/Originales/",i,".xlsx"), sheet = "FT001-02_1", skip = 17)
   }else if(i == "2021"){
     g1_1 <- read_excel(paste0("./Datos/Originales/",i,".xlsx"), sheet = "FT001-01_1", skip = 17)
@@ -56,9 +54,7 @@ for (i in periodo) {
   g7 <- g7 %>% pivot_longer(cols=starts_with(c("8","9")),names_to="EPS",values_to="cost")  %>% dplyr::filter(!is.na(LENGTH))
   g8 <- g8 %>% pivot_longer(cols=starts_with(c("8","9")),names_to="EPS",values_to="cost")  %>% dplyr::filter(!is.na(LENGTH))
   
-  if(i == "2019"){
-    g7_1 <- g7_1 %>% pivot_longer(cols=starts_with(c("8","9")),names_to="EPS",values_to="cost")  %>% dplyr::filter(!is.na(LENGTH))
-  }else if(i == "2020"){
+  if(i == "2020"){
     g2_1 <- g2_1 %>% pivot_longer(cols=starts_with(c("8","9")),names_to="EPS",values_to="cost")  %>% dplyr::filter(!is.na(LENGTH))
   }else if(i == "2021"){
     g1_1 <- g1_1 %>% pivot_longer(cols=starts_with(c("8","9")),names_to="EPS",values_to="cost")  %>% dplyr::filter(!is.na(LENGTH))
@@ -67,10 +63,7 @@ for (i in periodo) {
   
   # Unir en la  misma tabla #### 
   
-  if(i == "2019"){
-    base <- rbind(g1,g2,g6,g7,g8,g7_1)
-    rm(g1,g2,g6,g7,g8,g7_1)
-  }else if(i == "2020"){
+  if(i == "2020"){
     base <- rbind(g1,g2,g6,g7,g8,g2_1)
     rm(g1,g2,g6,g7,g8,g2_1)
   }else if(i == "2021"){
@@ -102,10 +95,7 @@ for (i in periodo) {
   }else if(i == "2021"){
     base <- base %>% filter(NIT %notin% c('891280008', '818000140', '890480110', '860045904', '892115006', '839000495', '837000084', 
                                           '900604350', '830113831', '891856000', '899999107', '900298372'))
-  }else{
-    base <- base
   }
-
   
   #-------------------------------------------------------------------------------
   #                     Sección 2. Cálculos siniestralidad
@@ -296,21 +286,17 @@ consolidado_siniestralidad_eps <- as.data.frame(consolidado_siniestralidad_eps)
 consolidado_eps_cuentas <- as.data.frame(consolidado_eps_cuentas)
 consolidado_siniestralidad_niif <- as.data.frame(consolidado_siniestralidad_niif)
 
-# Create a blank workbook
 OUT <- createWorkbook()
 
-# Add some sheets to the workbook
 addWorksheet(OUT, "Cuentas EPS")
 addWorksheet(OUT, "Siniestralidad")
 addWorksheet(OUT, "Siniestralidad EPS")
 addWorksheet(OUT, "Siniestralidad NIIF")
 
-# Write the data to the sheets
 writeData(OUT, sheet = "Siniestralidad", x = consolidado_siniestralidad)
 writeData(OUT, sheet = "Siniestralidad EPS", x = consolidado_siniestralidad_eps)
 writeData(OUT, sheet = "Siniestralidad NIIF", x = consolidado_siniestralidad_niif)
 writeData(OUT, sheet = "Cuentas EPS", x = consolidado_eps_cuentas)
 
-# Export the file
-saveWorkbook(OUT, "./Datos/Salidas/ConsolidadoPM_FDF.xlsx")
+saveWorkbook(OUT, "./Datos/Salidas/ConsolidadoPM.xlsx")
 
